@@ -1,10 +1,10 @@
 version: '3'
 services:
   neo4j:
-      image: neo4j:3.5.26
+      image: neo4j:latest
       container_name: neo4j_amundsen
       environment:
-        - NEO4J_AUTH=neo4j/test
+        - NEO4J_AUTH=neo4j/longertest
       ulimits:
         nofile:
           soft: 40000
@@ -57,6 +57,7 @@ services:
         - amundsennet
       environment:
          - PROXY_HOST=bolt://neo4j_amundsen
+         - PROXY_ENCRYPTED=False
   amundsenfrontend:
       build:
         args:
@@ -76,6 +77,26 @@ services:
         - SEARCHSERVICE_BASE=http://amundsensearch:5001
         - METADATASERVICE_BASE=http://amundsenmetadata:5002
         - FRONTEND_SVC_CONFIG_MODULE_CLASS=amundsen_application.config.TestConfig
+  mssql:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: mssql
+    volumes:
+      - mssqlvol:/var/opt/mssql
+      - ./setup.sql:/usr/config/setup.sql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=MSSQLp@ss
+      - MSSQL_PID=Developer
+      - MSSQL_DB=sampledb
+      - MSSQL_USER=SA
+      - MSSQL_PASSWORD=MSSQLp@ss
+      - MSSQL_DB_AUDIT_LOG-sample_audit_log
+    ports:
+      - 1433:1433
+
+
 
 networks:
   amundsennet:
+volumes:
+  mssqlvol:

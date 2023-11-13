@@ -16,13 +16,13 @@ const configCustom: AppConfigCustom = {
     showBadgesInHome: true,
   },
   indexDashboards: {
-    enabled: false,
+    enabled: true,
   },
   indexFeatures: {
     enabled: false,
   },
   indexUsers: {
-    enabled: false,
+    enabled: true,
   },
   issueTracking: {
     enabled: false,

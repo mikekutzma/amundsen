@@ -206,9 +206,9 @@ class Neo4jProxy(BaseProxy):
         OPTIONAL MATCH (tm:Type_Metadata)-[:HAS_BADGE]->(tm_badge:Badge)
         WITH db, clstr, schema, tbl, tbl_dscrpt, col, col_dscrpt, collect(distinct stat) as col_stats,
         collect(distinct badge) as col_badges,
-        {node: tm, description: tm_dscrpt, badges: collect(distinct tm_badge)} as tm_results
+        collect(distinct{node: tm, description: tm_dscrpt, badges: tm_badge}) as tm_results
         RETURN db, clstr, schema, tbl, tbl_dscrpt, col, col_dscrpt, col_stats, col_badges,
-        collect(distinct tm_results) as col_type_metadata
+        tm_results as col_type_metadata
         ORDER BY col.sort_order;""")
 
         tbl_col_neo4j_records = self._execute_cypher_query(
